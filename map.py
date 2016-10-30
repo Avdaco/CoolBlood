@@ -2,6 +2,7 @@
 import random
 import time
 
+
 #Array con las opciones de movimiento posibles (actualmente 8)
 decisions = ['N', 'E', 'S', 'W', 'NE', 'NW', 'SE', 'SW']
 
@@ -15,6 +16,17 @@ npcy = 4
 metax = 0
 metay = 0
 
+# Función que resetea la posición del personaje a una nueva posición aleatoria inicial.
+def reinicio():
+    global npcx
+    global npcy
+    while (npcx == 0) and (npcy == 0):
+        npcx = random.randint(0, w-1)
+        npcy = random.randint(0, h-1)
+    matrix[0][0] = '_'
+    matrix[npcx][npcy] = 'O'
+	
+	
 #Función para mover el personaje. Se pasa como parámetro la dirección en la que se mueve, y esta función se encarga de cambiar 'O', npcx y npcy
 def move(eleccion):
     global npcx
@@ -43,6 +55,15 @@ def move(eleccion):
         npcy = npcy - 1
     matrix[npcx][npcy] = 'O'
 
+# Función que proporciona la distancia del personaje a la meta.
+def dist():
+    global npcx 
+    global npcy
+    global metax
+    global metay
+    distancia=max(abs(npcx - metax),abs(npcy - metay))
+    return distancia
+	
 #Bucle principal de ejecución, se ejecuta indefinidamente (cancela la ejecución con CTRL X o CTRL C, no recuerdo ahora). En el futuro esto nos servirá para
 #aprender después de terminar cada ejecución. Se guardará cierta información sobre el comportamiento de cada run, según la cual los futuros runs serán
 #teóricamente mas eficientes
@@ -81,6 +102,7 @@ while True:
 
         print()
         print()
+        print('Distancia a la meta: ' + str(dist()))
         print(eleccion)
         #Se realiza el movimiento en la dirección escogida
         move(eleccion)
@@ -90,3 +112,4 @@ while True:
     #Al llegar a la meta, termina una ejecución del bucle y se muestra el número de movimientos que tardó
     print('Done! Number of movements: ' + str(movimientos))
     input() #Dale a enter para seguir con las ejecuciones
+    reinicio()
